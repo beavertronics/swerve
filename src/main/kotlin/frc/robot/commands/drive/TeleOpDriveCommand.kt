@@ -31,6 +31,7 @@ class TeleopDriveCommand(
     val omega: DoubleSupplier,
     val driveMode: BooleanSupplier,
     val slowMode: BooleanSupplier,
+    val slowModeMultiplier: Double = 0.125
 ) : Command() {
     private val controller = Drivetrain.swerveDrive.getSwerveController()
 
@@ -45,9 +46,9 @@ class TeleopDriveCommand(
         val slowMode = slowMode.asBoolean
 
         if (slowMode) {
-            forwardVelocity *= 0.125
-            strafeVelocity *= 0.125
-            angVelocity *= 0.125
+            forwardVelocity *= slowModeMultiplier
+            strafeVelocity *= slowModeMultiplier
+            angVelocity *= slowModeMultiplier
         }
 
         // Drive using raw values

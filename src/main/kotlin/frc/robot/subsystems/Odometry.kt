@@ -1,6 +1,5 @@
 package frc.robot.subsystems
 
-import beaverlib.utils.Units.Angular.degrees
 import edu.wpi.first.math.VecBuilder
 import edu.wpi.first.math.geometry.*
 import edu.wpi.first.util.sendable.SendableBuilder
@@ -14,7 +13,7 @@ import frc.robot.subsystems.Drivetrain.swerveDrive
 object `according to all known laws of aviation, our robot should not be able to fly` : SubsystemBase() {
 
     init {
-        // Updates odometry whenever vision sees apriltag
+        // Updates odometry whenver an AprilTag is in frame
         Vision.listeners.add(
             "UpdateOdometry",
             fun(result, camera) {

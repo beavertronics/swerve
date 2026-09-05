@@ -1,29 +1,18 @@
 package frc.robot
 
-import beaverlib.fieldmap.FieldMapREBUILTWelded
-import beaverlib.utils.Units.Angular.degrees
-import beaverlib.utils.Units.Linear.meters
-import edu.wpi.first.math.geometry.Pose2d
-import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj.TimedRobot
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.Commands
-import edu.wpi.first.wpilibj2.command.InstantCommand
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
-import frc.robot.commands.general.Move
-import frc.robot.commands.vision.AlignToTag
-import frc.robot.commands.tests.Wait
-import frc.robot.subsystems.Drivetrain
+import frc.robot.subsystems.Autos
 import frc.robot.subsystems.Orchestrator
 import frc.robot.subsystems.Phatplanner
 import frc.robot.subsystems.`according to all known laws of aviation, our robot should not be able to fly`
 
 /*
  Main code for controlling the robot. Mainly just links everything together.
-
  Driver control is defined in TeleOp.kt.
 */
 
@@ -32,61 +21,43 @@ import frc.robot.subsystems.`according to all known laws of aviation, our robot 
  * of the timed robot class
  */
 object RobotController : TimedRobot() {
+    // general command scheduler for scheduling events
     val commandScheduler = CommandScheduler.getInstance()
-//    val manualAutoCommands: Map<String,Command> = mapOf()
-    var selectedManualAuto: Command? = null
+    // manual auto chooser (the one for pathplanner is in the pathplanner file)
     val ManualAutoChooser = SendableChooser<Command>()
+    // whether to choose a manual auto or a pathplanner auto
     val AutoTypeChooser = SendableChooser<Boolean>()
+    // the selected manual or pathplanner auto
+    var selectedManualAuto: Command? = null
     var selectedPathAuto: Command? = null
 
     /**
      * runs when robot turns on, should be used for any initialization of robot or subsystems
      */
     override fun robotInit() {
-        // all subsystems
+        // initialize all subsystems
         TeleOp
         `according to all known laws of aviation, our robot should not be able to fly`
         Phatplanner
         Orchestrator
 
-        // start drive cam // todo replaced by vision feed
-        // CameraServer.startAutomaticCapture(0)
-
         // load manual autos
         ManualAutoChooser.setDefaultOption("no auto", Commands.none())
-        ManualAutoChooser.addOption("Align to multiple tags",
-            SequentialCommandGroup(
-                    AlignToTag(2),
-                    Wait(2.0),
-                    AlignToTag(3),
-                    Wait(2.0),
-                    AlignToTag(4)
-                )
-        )
-        ManualAutoChooser.addOption("Drive Sys ID",
-            Drivetrain.sysIdDriveMotor()
-        )
-        ManualAutoChooser.addOption("Angle Sys ID",
-            Drivetrain.sysIdAngleMotorCommand()
-        )
-        ManualAutoChooser.addOption("Orchestra - Never Gonna Give You Up by Rick Astley",
-            InstantCommand( { Orchestrator.loadnplay("orchestra/never_gonna_give_you_up.chrp")}, Orchestrator)
-        )
-        ManualAutoChooser.addOption("Orchestra - Silver Springs by Fleetwood Mac",
-            InstantCommand( { Orchestrator.loadnplay("orchestra/silver_springs_fleetwood_mac.chrp")}, Orchestrator)
-        )
-        SmartDashboard.putData("Autos/Manual auto choices", ManualAutoChooser)
+        ManualAutoChooser.addOption("Align to multiple tags", Autos.multiTagAlign)
+        ManualAutoChooser.addOption("Orchestra - Never Gonna Give You Up by Rick Astley", Autos.orchestrator_NeverGonnaGiveYouUp)
 
         // load pathplanner autos
         Phatplanner.autoChooser.setDefaultOption("no auto", Commands.none())
-        SmartDashboard.putData("Autos/Pathplanner auto choices", Phatplanner.autoChooser)
 
-        // make thing to choose between pathplanner and manual autos
+        // configure the thing to choose between manual or pathplanner autos
         AutoTypeChooser.setDefaultOption("Default - Manual", true)
         AutoTypeChooser.addOption("Pathplanner", true)
         AutoTypeChooser.addOption("Manual", false)
-        SmartDashboard.putData("Autos/Auto chooser", AutoTypeChooser)
 
+        // put everything on the dashboard
+        SmartDashboard.putData("Autos/Manual auto choices", ManualAutoChooser)
+        SmartDashboard.putData("Autos/Pathplanner auto choices", Phatplanner.autoChooser)
+        SmartDashboard.putData("Autos/Auto chooser", AutoTypeChooser)
     }
 
     /**
@@ -96,6 +67,7 @@ object RobotController : TimedRobot() {
     override fun robotPeriodic() { commandScheduler.run() }
 
     override fun autonomousInit() {
+        // select either the pathplanner auto or the manual auto (list of commands)
         if (!AutoTypeChooser.selected) {
             println("Using manual auto")
             selectedManualAuto = ManualAutoChooser.selected
@@ -109,15 +81,18 @@ object RobotController : TimedRobot() {
             println("Auto selected: " + selectedPathAuto)
         }
     }
-//    override fun autonomousPeriodic() {} //TODO: Unnecesary with command-based programming?
 
     /**
      * runs when teleop is ready
      */
     override fun teleopInit() {
+        // configure all of our inputs
         TeleOp.configureBindings()
+        // stop whatever autos were running
         if (!AutoTypeChooser.selected && selectedManualAuto != null) { selectedManualAuto?.cancel() }
         else if (AutoTypeChooser.selected && selectedPathAuto != null) { selectedPathAuto?.cancel() }
+        // if we were playing musics, stop
+        // this will free the motors: otherwise, we can't use the motors until they are done
         Orchestrator.stop()
     }
 

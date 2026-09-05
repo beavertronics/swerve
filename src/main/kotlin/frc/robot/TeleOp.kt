@@ -1,28 +1,16 @@
 package frc.robot
 
-import beaverlib.fieldmap.FieldMapREBUILTWelded
 import kotlin.math.*
 import beaverlib.utils.Sugar.within
-import beaverlib.utils.Units.Angular.degrees
-import beaverlib.utils.Units.Linear.meters
-import edu.wpi.first.math.geometry.Pose2d
-import edu.wpi.first.math.geometry.Rotation2d
-import edu.wpi.first.math.kinematics.Odometry
 import edu.wpi.first.wpilibj.GenericHID
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj2.command.Command
-import edu.wpi.first.wpilibj2.command.InstantCommand
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController
 import frc.robot.commands.drive.ChildModeDriveCommand
-import frc.robot.commands.drive.SwankDriveCommand
 import frc.robot.commands.drive.TeleopDriveCommand
-import frc.robot.commands.general.Move
-import frc.robot.commands.vision.AlignToTag
 import frc.robot.subsystems.Drivetrain
-import frc.robot.subsystems.`according to all known laws of aviation, our robot should not be able to fly`
 
 /*
 Sets up the operator interface (controller inputs), as well as
@@ -33,18 +21,13 @@ setting up the commands for running the drivetrain and the subsystems
  * class for managing systems and inputs
  */
 object TeleOp {
+    // basic command for teleop drive
     val teleOpDrive: TeleopDriveCommand =
         TeleopDriveCommand(
             { OI.C_LY },
             { OI.C_LX },
             { OI.C_RX },
             { OI.C_RT.asBoolean },
-            { OI.C_LT.asBoolean }
-        )
-    val swankDrive: SwankDriveCommand =
-        SwankDriveCommand(
-            { OI.C_LY },
-            { OI.C_LX },
             { OI.C_LT.asBoolean }
         )
     val childDrive: ChildModeDriveCommand =
@@ -63,35 +46,13 @@ object TeleOp {
 
     init {
         // SWAP THIS WITH WHATEVER COMMAND YOU WANT TO BE DRIVING THE ROBOT!
-        Drivetrain.defaultCommand = childDrive
+        Drivetrain.defaultCommand = teleOpDrive
     }
 
     /**
-     * configures things to run on specific inputs
+     * configures things to run on specific inputs. You can put code that runs subsystems here.
      */
-    fun configureBindings() {
-//        OI.C_LB.whileTrue(AlignToTag(
-//            aprilTagID = 26,
-//            speedLimit = 1.75,
-//            offsets = Pose2d(2.5.meters.asMeters, 0.0.meters.asMeters, Rotation2d(0.0.degrees.asRadians)),
-//            end = true
-//        ))
-//        OI.C_RB.whileTrue(InstantCommand(Drivetrain::lock, Drivetrain))
-//        OI.C_A.whileTrue(
-//            Move(Pose2d(
-//                FieldMapREBUILTWelded.teamHub.center.x
-//                    - FieldMapREBUILTWelded.HubWidth / 2
-//                    - 2.0.meters.asMeters,
-//                FieldMapREBUILTWelded.teamHub.center.y,
-//                Rotation2d((0.0).degrees.asRadians)
-//            ))
-//        )
-//        OI.C_X.whileTrue(
-//            InstantCommand({
-//                `according to all known laws of aviation, our robot should not be able to fly`.resetOdometry(Pose2d())
-//            })
-//        )
-    }
+    fun configureBindings() {}
 
     /**
      * Class for the operator interface

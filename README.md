@@ -1,38 +1,22 @@
 # Beavertronics Swerve
-This is the command-based swerve code for 5970, using the swerve library YAGSL.
-This project includes the following:
-- Swerve
-- Vision
-- Swank (Swerve-tank)
-- Swar (Swerve-car), and FS-Swar (Foursteer-swerve-car)
-- Additional "child mode" drive command
-- Example pneumatics subsystem
+This is a repository containing command-based swerve code to be used for each year. 
+It is kept up to date every year.
 
+## Dependencies
+This library depends on Beaverlib, which is kotlin FRC library co-developed by 5970 and 2898. 
+Instructions on installation and usage can be found [here](https://github.com/beavertronics/beaverlib)!
 
-## Beaverlib
-**Updating beaverlib** <br>
+## Used JVMs
+For general coding, we use the following JVM:
+- corretto-17.0.14, found in .jdks under user account
 
-In order to update beaverlib, you can either update it in the terminal with this:
+For simulation, we use the JVM that comes with WPILib each year:
+- wpilib/(year)/jdk
 
-- `git submodule update --init --recursive --remote`
-
-Or you can update it in Intellij IDEA by clicking on branches in the top-left,
-then selecting beaverlib and updating it.
-
-**Reinstalling beaverlib** <br>
-To fix beaverlib not showing up or updating, you can delete the beaverlib folder
-then reinstall it with the following function:
-
-- `git submodule add https://github.com/beavertronics/beaverlib.git ./(path from root of project)`
-
-For us specifically, the full command is:
-- `git submodule add https://github.com/beavertronics/beaverlib.git ./src/main/kotlin/beaverlib`
-
-JVM: corretto-17.0.14, found in .jdks under user account
-JVM: consider WPI jdk for simulation which is under wpilib/(year)/jdk
+## Other Features
+In addition to having code for swerve drive, this project has other features:
+- Music player that plays music via Kraken motors
+- Child drive mode for outreaches
 
 ## Instructions / information
-- [Instructions on Swerve setup](/docs/Swerve.md)
-- [Information on Swank](/docs/Swank.md)
-- [Information on Swar and FS-Swar](/docs/Swar.md)
-- [Information on child mode]
+Information about setup and usage can be found on the wiki [here](https://github.com/beavertronics/swerve/wiki)!
