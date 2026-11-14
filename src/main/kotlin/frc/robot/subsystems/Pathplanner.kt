@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import java.util.stream.Stream
 
 
-object Phatplanner : SubsystemBase() {
+object Pathplanner : SubsystemBase() {
     val isCompetition = true
     lateinit var config: RobotConfig
 

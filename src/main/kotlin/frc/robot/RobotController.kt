@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.Commands
 import frc.robot.subsystems.Autos
 import frc.robot.subsystems.Orchestrator
-import frc.robot.subsystems.Phatplanner
+import frc.robot.subsystems.Pathplanner
 import frc.robot.subsystems.`according to all known laws of aviation, our robot should not be able to fly`
 
 /*
@@ -38,16 +38,15 @@ object RobotController : TimedRobot() {
         // initialize all subsystems
         TeleOp
         `according to all known laws of aviation, our robot should not be able to fly`
-        Phatplanner
+        Pathplanner
         Orchestrator
 
         // load manual autos
         ManualAutoChooser.setDefaultOption("no auto", Commands.none())
-        ManualAutoChooser.addOption("Align to multiple tags", Autos.multiTagAlign)
         ManualAutoChooser.addOption("Orchestra - Never Gonna Give You Up by Rick Astley", Autos.orchestrator_NeverGonnaGiveYouUp)
 
         // load pathplanner autos
-        Phatplanner.autoChooser.setDefaultOption("no auto", Commands.none())
+        Pathplanner.autoChooser.setDefaultOption("no auto", Commands.none())
 
         // configure the thing to choose between manual or pathplanner autos
         AutoTypeChooser.setDefaultOption("Default - Manual", true)
@@ -56,7 +55,7 @@ object RobotController : TimedRobot() {
 
         // put everything on the dashboard
         SmartDashboard.putData("Autos/Manual auto choices", ManualAutoChooser)
-        SmartDashboard.putData("Autos/Pathplanner auto choices", Phatplanner.autoChooser)
+        SmartDashboard.putData("Autos/Pathplanner auto choices", Pathplanner.autoChooser)
         SmartDashboard.putData("Autos/Auto chooser", AutoTypeChooser)
     }
 
@@ -76,7 +75,7 @@ object RobotController : TimedRobot() {
         }
         else {
             println("using pathplanner auto")
-            selectedPathAuto = Phatplanner.getAutonomousCommand()
+            selectedPathAuto = Pathplanner.getAutonomousCommand()
             commandScheduler.schedule(selectedPathAuto)
             println("Auto selected: " + selectedPathAuto)
         }

@@ -1,7 +1,7 @@
 package frc.robot
 
+import Engine.utils.Sugar.within
 import kotlin.math.*
-import beaverlib.utils.Sugar.within
 import edu.wpi.first.wpilibj.GenericHID
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj2.command.Command
@@ -24,23 +24,23 @@ object TeleOp {
     // basic command for teleop drive
     val teleOpDrive: TeleopDriveCommand =
         TeleopDriveCommand(
-            { OI.C_LY },
-            { OI.C_LX },
-            { OI.C_RX },
-            { OI.C_RT.asBoolean },
-            { OI.C_LT.asBoolean }
+            { OI.C1_LY },
+            { OI.C1_LX },
+            { OI.C1_RX },
+            { OI.C1_RT.asBoolean },
+            { OI.C1_LT.asBoolean }
         )
     val childDrive: ChildModeDriveCommand =
         ChildModeDriveCommand(
-            { OI.C_LY }, // parent forward
-            { OI.C_LX }, // parent strafe
-            { OI.C_RX }, // parent rotate
-            { OI.C_RT.asBoolean }, // toggle child mode
+            { OI.C1_LY }, // parent forward
+            { OI.C1_LX }, // parent strafe
+            { OI.C1_RX }, // parent rotate
+            { OI.C1_RT.asBoolean }, // toggle child mode
             { OI.LJS_Y }, // child forwards
             { OI.LJS_X }, // child strafe
             { OI.RJS_X }, // child rotate
-            { OI.C_LB.asBoolean }, // drive mode
-            { OI.C_LT.asBoolean } // slow mode
+            { OI.C1_LB.asBoolean }, // drive mode
+            { OI.C1_LT.asBoolean } // slow mode
 
         )
 
@@ -59,7 +59,7 @@ object TeleOp {
      * getting inputs from controllers and whatnot.
      */
     object OI : SubsystemBase() {
-        val xboxController = CommandXboxController(0)
+        val xboxController1 = CommandXboxController(0)
         val leftJoystick = CommandJoystick(1)
         val rightJoystick = CommandJoystick(2)
 
@@ -124,122 +124,19 @@ object TeleOp {
          * Values for inputs go here
          */
         //===== DRIVETRAIN =====//
-        val C_LX get() = xboxController.leftX.processInput()
-        val C_LY get() = xboxController.leftY.processInput()
-        val C_RX get() = xboxController.rightX.processInput()
-        val C_LB get() = xboxController.leftBumper()
-        val C_RB get() = xboxController.rightBumper()
-        val C_LT get() = xboxController.leftTrigger()
-        val C_RT get() = xboxController.rightTrigger()
+        val C1_LX get() = xboxController1.leftX.processInput()
+        val C1_LY get() = xboxController1.leftY.processInput()
+        val C1_RX get() = xboxController1.rightX.processInput()
+        val C1_LB get() = xboxController1.leftBumper()
+        val C1_RB get() = xboxController1.rightBumper()
+        val C1_LT get() = xboxController1.leftTrigger()
+        val C1_RT get() = xboxController1.rightTrigger()
+        val C1_A get() = xboxController1.a()
+        val C1_X get() = xboxController1.x()
         val LJS_X get() = leftJoystick.x.processInput()
         val LJS_Y get() = leftJoystick.y.processInput()
         val RJS_X get() = rightJoystick.x.processInput()
-        val C_A get() = xboxController.a()
-        val C_X get() = xboxController.x()
         val RJS_Y get() = rightJoystick.y.processInput()
         //===== SUBSYSTEMS =====//
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// uwu
