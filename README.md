@@ -17,6 +17,3 @@ For simulation, we use the JVM that comes with WPILib each year:
 In addition to having code for swerve drive, this project has other features:
 - Music player that plays music via Kraken motors
 - Child drive mode for outreaches
-
-## Instructions / information
-Information about setup and usage can be found on the wiki [here](https://github.com/beavertronics/swerve/wiki)!
