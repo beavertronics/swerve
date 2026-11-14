@@ -43,7 +43,6 @@ object RobotController : TimedRobot() {
 
         // load manual autos
         ManualAutoChooser.setDefaultOption("no auto", Commands.none())
-        ManualAutoChooser.addOption("Align to multiple tags", Autos.multiTagAlign)
         ManualAutoChooser.addOption("Orchestra - Never Gonna Give You Up by Rick Astley", Autos.orchestrator_NeverGonnaGiveYouUp)
 
         // load pathplanner autos

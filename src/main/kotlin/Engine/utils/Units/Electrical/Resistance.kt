@@ -24,5 +24,6 @@ val Number.kiloOhms get() = Resistance(toDouble()*1000)
 
 //Destructors
 val Resistance.asMilliOhms get() = asOhms*1000
+@Suppress("EXTENSION_SHADOWED_BY_MEMBER")
 val Resistance.asOhms get() = asOhms/1000
 
